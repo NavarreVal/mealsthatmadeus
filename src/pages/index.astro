@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { SITE_DESCRIPTION } from '../consts';
+
+const recipes = (await getCollection('recipes'))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+---
+
+<BaseLayout>
+  <h1 style="font-size: 2.6rem; margin-bottom: 0.5rem;">The Meals That Made Us</h1>
+  <p style="font-size: 1.2rem; color: #666; margin-bottom: 2.5rem;">{SITE_DESCRIPTION}</p>
+
+  <p style="margin-bottom: 2rem;">
+    A collection of family recipes and the stories that come with them — the dishes that shaped us, comforted us, and still bring us together.
+  </p>
+
+  <h2 style="font-size: 1.5rem; margin-bottom: 1.25rem;">Latest Recipes</h2>
+
+  <ul style="list-style: none; padding: 0;">
+    {recipes.map((recipe) => (
+      <li style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid #e6dfd4;">
+        <a href={`/recipes/${recipe.id}/`} style="font-size: 1.25rem; font-weight: bold;">
+          {recipe.data.title}
+        </a>
+        <p style="margin: 0.35rem 0 0; color: #666;">{recipe.data.description}</p>
+      </li>
+    ))}
+  </ul>
+
+  <p style="margin-top: 2rem;">
+    <a href="/recipes">View all recipes →</a>
+  </p>
+</BaseLayout>

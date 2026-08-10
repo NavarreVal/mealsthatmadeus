@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const recipes = (await getCollection('recipes')).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+
+<BaseLayout title="Recipes">
+  <h1 style="font-size: 2.4rem; margin-bottom: 0.5rem;">Recipes</h1>
+  <p style="color: #666; margin-bottom: 2.5rem;">Family dishes and the stories that come with them.</p>
+
+  <ul style="list-style: none; padding: 0;">
+    {recipes.map((recipe) => (
+      <li style="margin-bottom: 1.75rem; padding-bottom: 1.75rem; border-bottom: 1px solid #e6dfd4;">
+        <a href={`/recipes/${recipe.id}/`} style="font-size: 1.3rem; font-weight: bold;">
+          {recipe.data.title}
+        </a>
+        <p style="margin: 0.4rem 0 0; color: #666;">{recipe.data.description}</p>
+        {recipe.data.category && (
+          <p style="margin: 0.35rem 0 0; font-size: 0.9rem; color: #888;">
+            {recipe.data.category}
+            {recipe.data.yield && ` · ${recipe.data.yield}`}
+          </p>
+        )}
+      </li>
+    ))}
+  </ul>
+</BaseLayout>
