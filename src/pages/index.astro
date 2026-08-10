@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import { SITE_DESCRIPTION } from '../consts';
+import heroImage from '../assets/MTMU_hero.jpg';
 
 const recipes = (await getCollection('recipes'))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
@@ -9,10 +10,55 @@ const recipes = (await getCollection('recipes'))
 ---
 
 <BaseLayout>
-  <h1 style="font-size: 2.6rem; margin-bottom: 0.5rem;">The Meals That Made Us</h1>
-  <p style="font-size: 1.2rem; color: #666; margin-bottom: 2.5rem;">{SITE_DESCRIPTION}</p>
 
-  <p style="margin-bottom: 2rem;">
+    <!-- Hero -->
+    <section class="full-bleed" style="position: relative; margin-bottom: 3rem;">
+      <img 
+        src={heroImage.src} 
+        alt="Family meal — roasted chicken with citrus and herbs" 
+        style="width: 100%; height: 560px; object-fit: cover; display: block;"
+      />
+      <div style="
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          ellipse at center,
+          rgba(0,0,0,0.55) 0%,
+          rgba(0,0,0,0.4) 40%,
+          rgba(0,0,0,0.25) 70%,
+          rgba(0,0,0,0.15) 100%
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem 1.5rem;
+        color: white;
+        text-align: center;
+      ">
+        <div style="max-width: 38rem; transform: translateY(45%);">
+          <p style="
+            font-size: 1.7rem;
+            margin: 0 0 1rem;
+            line-height: 1.4;
+            font-style: italic;
+            font-weight: normal;
+          ">
+            “Food, in the end, in our own tradition, is something holy… It’s about identity.”
+          </p>
+          <p style="
+            font-size: 0.95rem;
+            margin: 0;
+            opacity: 0.9;
+            font-family: system-ui, -apple-system, sans-serif;
+            letter-spacing: 0.03em;
+          ">
+            — Louise Fresco
+          </p>
+        </div>
+      </div>
+    </section>
+
+  <p style="margin-bottom: 2.5rem; font-size: 1.1rem;">
     A collection of family recipes and the stories that come with them — the dishes that shaped us, comforted us, and still bring us together.
   </p>
 
