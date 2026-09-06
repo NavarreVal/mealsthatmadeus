@@ -17,6 +17,8 @@ const recipes = (await getCollection('recipes'))
 			class="home-hero__image"
 			widths={[640, 960, 1440, 1920]}
 			sizes="100vw"
+			loading="eager"
+			fetchpriority="high"
 		/>
 		<div class="home-hero__overlay">
 			<div class="home-hero__copy">
