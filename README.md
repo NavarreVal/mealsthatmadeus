@@ -1,63 +1,49 @@
-# Astro Starter Kit: Blog
+# Meals That Made Us
 
-```sh
-npm create astro@latest -- --template blog
-```
+Family recipes and the stories that come with them — a site for Alyssa and Navarre Valdivieso.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Live site: [mealsthatmadeus.com](https://mealsthatmadeus.com)
 
-Features:
+Built with [Astro](https://astro.build) and deployed on Cloudflare Pages.
 
-- ✅ Minimal styling (make it your own!)
-- ✅ 100/100 Lighthouse performance
-- ✅ SEO-friendly with canonical URLs and Open Graph data
-- ✅ Sitemap support
-- ✅ RSS Feed support
-- ✅ Markdown & MDX support
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
+## Project structure
 
 ```text
-├── public/
-├── src/
-│   ├── assets/
-│   ├── components/
-│   ├── content/
-│   ├── layouts/
-│   └── pages/
-├── astro.config.mjs
-├── README.md
-├── package.json
-└── tsconfig.json
+src/
+├── assets/              # Hero image and other site media
+├── components/          # Header, footer, SEO head, shared bits
+├── content/recipes/     # Recipe markdown (content collections)
+├── layouts/BaseLayout.astro
+├── pages/               # Home, About, recipe list + detail, RSS
+└── styles/global.css    # Shared cookbook styles
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+Recipes live in `src/content/recipes/` as Markdown. Frontmatter is type-checked by the `recipes` collection in `src/content.config.ts`. See [Astro content collections](https://docs.astro.build/en/guides/content-collections/).
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## Commands
 
-The `src/content/` directory contains "collections" of related Markdown and MDX documents. Use `getCollection()` to retrieve posts from `src/content/blog/`, and type-check your frontmatter using an optional schema. See [Astro's Content Collections docs](https://docs.astro.build/en/guides/content-collections/) to learn more.
+| Command                | Action                                      |
+| :--------------------- | :------------------------------------------ |
+| `npm install`          | Install dependencies                        |
+| `npm run dev`          | Start the local dev server at `localhost:4321` |
+| `npm run build`        | Build the production site to `./dist/`      |
+| `npm run preview`      | Preview the production build locally        |
+| `npm run astro ...`    | Run Astro CLI commands (`astro check`, etc.) |
 
-Any static assets, like images, can be placed in the `public/` directory.
+## Adding a recipe
 
-## 🧞 Commands
+Create a new `.md` file in `src/content/recipes/`. Keep the story, ingredients, and instructions in Alyssa’s voice. Typical frontmatter:
 
-All commands are run from the root of the project, from a terminal:
+```md
+---
+title: "Recipe name"
+description: "A short summary for the list page and SEO."
+pubDate: 2026-09-06
+author: "Alyssa Valdivieso"
+yield: "6 servings"
+category: "Main Dish"
+tags: ["Family"]
+---
+```
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
-
-## Credit
-
-This theme is based off of the lovely [Bear Blog](https://github.com/HermanMartinus/bearblog/).
+Optional fields: `updatedDate`, `prepTime`, `cookTime`, `totalTime`, `heroImage`, `featured`.
