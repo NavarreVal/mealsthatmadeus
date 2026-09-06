@@ -1,13 +1,14 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
 import { type CollectionEntry, getCollection, render } from 'astro:content';
+import FormattedDate from '../../components/FormattedDate.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
 
 export async function getStaticPaths() {
-  const recipes = await getCollection('recipes');
-  return recipes.map((recipe) => ({
-    params: { slug: recipe.id },
-    props: recipe,
-  }));
+	const recipes = await getCollection('recipes');
+	return recipes.map((recipe) => ({
+		params: { slug: recipe.id },
+		props: recipe,
+	}));
 }
 
 type Props = CollectionEntry<'recipes'>;
@@ -16,32 +17,32 @@ const { Content } = await render(recipe);
 ---
 
 <BaseLayout title={recipe.data.title} description={recipe.data.description}>
-  <article>
-    <p style="font-size: 0.95rem; color: #888; margin-bottom: 0.5rem;">
-      {recipe.data.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-      {recipe.data.category && ` · ${recipe.data.category}`}
-    </p>
+	<article>
+		<p class="recipe-kicker">
+			<FormattedDate date={recipe.data.pubDate} />
+			{recipe.data.category && ` · ${recipe.data.category}`}
+		</p>
 
-    <h1 style="font-size: 2.3rem; margin-top: 0; margin-bottom: 0.75rem;">{recipe.data.title}</h1>
-    
-    <p style="font-size: 1.15rem; color: #555; font-style: italic; margin-bottom: 1.5rem;">
-      {recipe.data.description}
-    </p>
+		<h1 class="recipe-title">{recipe.data.title}</h1>
 
-    {(recipe.data.yield || recipe.data.prepTime || recipe.data.cookTime) && (
-      <p style="font-size: 0.95rem; color: #666; margin-bottom: 2rem;">
-        {recipe.data.yield && <span>Yield: {recipe.data.yield}</span>}
-        {recipe.data.prepTime && <span> · Prep: {recipe.data.prepTime}</span>}
-        {recipe.data.cookTime && <span> · Cook: {recipe.data.cookTime}</span>}
-      </p>
-    )}
+		<p class="recipe-dek">{recipe.data.description}</p>
 
-    <div class="recipe-content">
-      <Content />
-    </div>
+		{
+			(recipe.data.yield || recipe.data.prepTime || recipe.data.cookTime) && (
+				<p class="recipe-times">
+					{recipe.data.yield && <span>Yield: {recipe.data.yield}</span>}
+					{recipe.data.prepTime && <span> · Prep: {recipe.data.prepTime}</span>}
+					{recipe.data.cookTime && <span> · Cook: {recipe.data.cookTime}</span>}
+				</p>
+			)
+		}
 
-    <p style="margin-top: 3rem;">
-      <a href="/recipes">← All Recipes</a>
-    </p>
-  </article>
+		<div class="recipe-content">
+			<Content />
+		</div>
+
+		<p class="recipe-back">
+			<a href="/recipes">← All Recipes</a>
+		</p>
+	</article>
 </BaseLayout>
