@@ -139,6 +139,11 @@ hr {
 	text-wrap: pretty;
 }
 
+.site-footer__legal {
+	margin: 0.5rem auto 0;
+	font-size: 0.85rem;
+}
+
 .site-footer a {
 	color: var(--color-accent);
 	text-underline-offset: 0.12em;
@@ -148,6 +153,24 @@ hr {
 	width: 100vw;
 	margin-left: calc(50% - 50vw);
 	margin-right: calc(50% - 50vw);
+}
+
+/* Legal pages */
+
+.legal-page h2 {
+	font-size: clamp(1.15rem, 2.5vw, 1.35rem);
+	margin: 2rem 0 0.75rem;
+}
+
+.legal-page .placeholder {
+	background: #fff3cd;
+	padding: 0 0.25em;
+	font-weight: 600;
+}
+
+.legal-page address {
+	font-style: normal;
+	line-height: 1.7;
 }
 
 /* Page chrome */
