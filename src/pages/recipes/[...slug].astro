@@ -2,6 +2,7 @@
 import { type CollectionEntry, getCollection, render } from 'astro:content';
 import FormattedDate from '../../components/FormattedDate.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { buildRecipeJsonLd, recipeMarkdown, resolveLocalImageUrl } from '../../lib/recipe-schema';
 
 export async function getStaticPaths() {
 	const recipes = await getCollection('recipes');
@@ -14,9 +15,24 @@ export async function getStaticPaths() {
 type Props = CollectionEntry<'recipes'>;
 const recipe = Astro.props;
 const { Content } = await render(recipe);
+const recipeJsonLd = buildRecipeJsonLd({
+	title: recipe.data.title,
+	description: recipe.data.description,
+	author: recipe.data.author,
+	pubDate: recipe.data.pubDate,
+	updatedDate: recipe.data.updatedDate,
+	yield: recipe.data.yield,
+	prepTime: recipe.data.prepTime,
+	cookTime: recipe.data.cookTime,
+	totalTime: recipe.data.totalTime,
+	category: recipe.data.category,
+	tags: recipe.data.tags,
+	imageUrl: resolveLocalImageUrl(recipe.data.heroImage, Astro.site),
+	markdown: recipeMarkdown(recipe),
+});
 ---
 
-<BaseLayout title={recipe.data.title} description={recipe.data.description}>
+<BaseLayout title={recipe.data.title} description={recipe.data.description} jsonLd={[recipeJsonLd]}>
 	<article>
 		<p class="recipe-kicker">
 			<FormattedDate date={recipe.data.pubDate} />
