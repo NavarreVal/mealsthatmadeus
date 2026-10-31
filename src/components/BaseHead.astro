@@ -3,23 +3,41 @@ import '../styles/global.css';
 import type { ImageMetadata } from 'astro';
 import { getImage } from 'astro:assets';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { jsonLdScript } from '../lib/recipe-schema';
 import DefaultOgImage from '../assets/MTMU_hero.jpg';
 
 interface Props {
 	title?: string;
 	description?: string;
 	image?: ImageMetadata;
+	jsonLd?: Record<string, unknown>[];
 }
 
 const {
 	title = SITE_TITLE,
 	description = SITE_DESCRIPTION,
 	image = DefaultOgImage,
+	jsonLd = [],
 } = Astro.props;
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const pathname = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${Astro.url.pathname}/`;
+const canonicalURL = new URL(pathname, Astro.site);
+const siteHref = new URL('/', Astro.site).href;
 const ogImage = await getImage({ src: image, width: 1200 });
 const ogImageURL = new URL(ogImage.src, Astro.site);
+
+const websiteJsonLd = {
+	'@context': 'https://schema.org',
+	'@type': 'WebSite',
+	name: SITE_TITLE,
+	url: siteHref,
+};
+const organizationJsonLd = {
+	'@context': 'https://schema.org',
+	'@type': 'Organization',
+	name: SITE_TITLE,
+	url: siteHref,
+};
 ---
 
 <meta charset="utf-8" />
@@ -36,6 +54,14 @@ const ogImageURL = new URL(ogImage.src, Astro.site);
 <meta name="generator" content={Astro.generator} />
 
 <link rel="canonical" href={canonicalURL} />
+
+<script type="application/ld+json" set:html={jsonLdScript(websiteJsonLd)} />
+<script type="application/ld+json" set:html={jsonLdScript(organizationJsonLd)} />
+{
+	jsonLd.map((block) => (
+		<script type="application/ld+json" set:html={jsonLdScript(block)} />
+	))
+}
 
 <title>{title}</title>
 <meta name="description" content={description} />
